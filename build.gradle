@@ -1,0 +1,33 @@
+apply plugin: 'groovy'
+
+dependencies {
+	compile localGroovy()
+
+	compile 'joda-time:joda-time:2.9.4'
+	compile 'org.apache.commons:commons-csv:1.2'
+
+}
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
+
+task runScript(type: JavaExec) {
+	description 'Run Groovy script'
+
+	main = 'com.atimbo.AnalyzeLogFile'
+
+	if (project.hasProperty('logFile')) {
+		args project.getProperty('logFile')
+	}	
+
+	classpath = sourceSets.main.runtimeClasspath
+
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = gradleWrapperVersion
+}
+
+defaultTasks 'runScript'
